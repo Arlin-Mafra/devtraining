@@ -18,7 +18,7 @@ export class CoursesController {
   }
 
   @Get(':id')
-  show(@Param(':id') id: string) {
+  show(@Param('id') id: string) {
     return this.courseService.show(id);
   }
 
