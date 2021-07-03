@@ -1,25 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Course } from './entity/Courso';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { CreateCourseDto } from './dto/create-course-dto.interface';
+import { UpdateCourseDto } from './dto/update-course-dto.interface';
+import { Course } from './entity/Course';
 
 @Injectable()
 export class CoursesService {
-  private courses: Course[] = [
-    {
-      id: 1,
-      name: 'Curso NestJS',
-      description: 'Curso NestJS',
-      tags: ['nodeJS', 'NestJS'],
-    },
-  ];
+  constructor(
+    @InjectRepository(Course)
+    private courseRepository: Repository<Course>,
+  ) {}
 
-  list() {
-    return this.courses;
+  async list(): Promise<Course[]> {
+    return await this.courseRepository.find();
   }
 
-  show(id: string) {
-    const course = this.courses.find(
-      (course: Course) => course.id === Number(id),
-    );
+  async show(id: string): Promise<Course> {
+    const course = await this.courseRepository.findOne(id);
     console.log(course);
     if (!course) {
       throw new HttpException(
@@ -32,27 +30,16 @@ export class CoursesService {
     }
   }
 
-  cretate(createCourse: any) {
-    this.courses.push(createCourse);
-    return createCourse;
+  async cretate(course: CreateCourseDto) {
+    await this.courseRepository.save(course);
+    return course;
   }
 
-  update(id: string, updateCourse: any) {
-    const courseIndex = this.courses.findIndex(
-      (course: Course) => course.id === Number(id),
-    );
-
-    this.courses[courseIndex] = updateCourse;
-    return updateCourse;
+  async update(course: UpdateCourseDto): Promise<UpdateResult> {
+    return await this.courseRepository.update(course.id, course);
   }
 
-  delete(id: string) {
-    const courseIndex = this.courses.findIndex(
-      (course: Course) => course.id === Number(id),
-    );
-
-    if (courseIndex >= 0) {
-      this.courses.splice(courseIndex, 1);
-    }
+  async delete(id: string): Promise<DeleteResult> {
+    return await this.courseRepository.delete(id);
   }
 }

@@ -25,17 +25,22 @@ export class CoursesController {
   }
 
   @Post()
-  Create(@Body() createCourseDTO: CreateCourseDto) {
+  Create(@Body() createCourseDTO: CreateCourseDto): Promise<any> {
     return this.courseService.cretate(createCourseDTO);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseDTO: UpdateCourseDto) {
-    return this.courseService.update(id, updateCourseDTO);
+  async update(
+    @Param('id') id: string,
+    @Body()
+    updateCourseDTO: UpdateCourseDto,
+  ): Promise<any> {
+    updateCourseDTO.id = Number(id);
+    return await this.courseService.update(updateCourseDTO);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string): Promise<any> {
     return this.courseService.delete(id);
   }
 }
