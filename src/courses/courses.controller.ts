@@ -36,7 +36,7 @@ export class CoursesController {
     updateCourseDTO: UpdateCourseDto,
   ): Promise<any> {
     updateCourseDTO.id = Number(id);
-    return await this.courseService.update(updateCourseDTO);
+    return await this.courseService.update(id, updateCourseDTO);
   }
 
   @Delete(':id')

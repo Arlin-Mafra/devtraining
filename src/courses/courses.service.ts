@@ -1,6 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course-dto.interface';
 import { UpdateCourseDto } from './dto/update-course-dto.interface';
 import { Course } from './entity/Course';
@@ -35,11 +40,24 @@ export class CoursesService {
     return course;
   }
 
-  async update(course: UpdateCourseDto): Promise<UpdateResult> {
-    return await this.courseRepository.update(course.id, course);
+  async update(id: string, course: UpdateCourseDto) {
+    const courseUpdate = await this.courseRepository.preload({
+      id: course.id,
+      ...course,
+    });
+
+    if (!courseUpdate) {
+      throw new NotFoundException(`Curso de ID ${id} não encontrado`);
+    }
+    return this.courseRepository.save(courseUpdate);
   }
 
-  async delete(id: string): Promise<DeleteResult> {
-    return await this.courseRepository.delete(id);
+  async delete(id: string) {
+    const course = await this.courseRepository.findOne(id);
+
+    if (!course) {
+      throw new NotFoundException(`Curso de ID ${id} não encontrado`);
+    }
+    return this.courseRepository.remove(course);
   }
 }
