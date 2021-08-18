@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Tag } from './Tag';
+import { Tag } from './Tag.entity';
 
 @Entity('courses')
 export class Course {
