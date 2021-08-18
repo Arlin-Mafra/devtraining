@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course-dto.interface';
@@ -25,11 +20,7 @@ export class CoursesService {
     const course = await this.courseRepository.findOne(id);
     console.log(course);
     if (!course) {
-      throw new HttpException(
-        `Curso de ID ${id} não encontrado`,
-
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException(`Curso de ID ${id} não encontrado`);
     } else {
       return course;
     }
