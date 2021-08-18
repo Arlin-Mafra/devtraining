@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoursesModule } from './courses/courses.module';
 import { Course } from './courses/entity/Course';
+import { Tag } from './courses/entity/Tag';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { Course } from './courses/entity/Course';
       username: 'postgres',
       password: 'docker',
       database: 'devtraining',
-      entities: [Course],
+      entities: [Course, Tag],
       synchronize: true,
     }),
     CoursesModule,
@@ -24,5 +24,5 @@ import { Course } from './courses/entity/Course';
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private connection: Connection) {}
+  // constructor(private connection: Connection) {}
 }
