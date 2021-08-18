@@ -6,8 +6,8 @@
    "password": "docker",
   "database": "devtraining",
   "entities": ["dist/**/*.entity.js"],
-  "migrations": ["dist/migration/*.js"],
+  "migrations": ["dist/migrations/*.js"],
   "cli": {
-    "migrationsDir": "./src/migration"
+    "migrationsDir": "src/migrations"
   }
 }
