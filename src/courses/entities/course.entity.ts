@@ -9,8 +9,8 @@ import { Tag } from './tag.entity';
 
 @Entity('courses')
 export class Course {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -18,7 +18,7 @@ export class Course {
   @Column()
   description: string;
 
-  @JoinTable()
+  @JoinTable({ name: 'courses_tags' })
   @ManyToMany(() => Tag, (tag) => tag.courses, { cascade: true })
   tags: Tag[];
 }

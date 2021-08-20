@@ -33,17 +33,21 @@ export class CoursesService {
     }
   }
 
-  async cretate(course: CreateCourseDto) {
-    const tags = await Promise.all(
-      course.tags.map((name) => this.preloadTagByName(name)),
-    );
+  async cretate(createCourseDto: CreateCourseDto) {
+    try {
+      const tags = await Promise.all(
+        createCourseDto.tags.map((name) => this.preloadTagByName(name)),
+      );
 
-    const courseCreate = this.courseRepository.create({
-      ...course,
-      tags,
-    });
-    await this.courseRepository.save(courseCreate);
-    return courseCreate;
+      const courseCreate = this.courseRepository.create({
+        ...createCourseDto,
+        tags,
+      });
+      await this.courseRepository.save(courseCreate);
+      return courseCreate;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async update(id: string, course: UpdateCourseDto) {
@@ -54,7 +58,7 @@ export class CoursesService {
       ));
 
     const courseUpdate = await this.courseRepository.preload({
-      id: +id,
+      id: id,
       ...course,
       tags,
     });
