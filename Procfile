@@ -1,3 +1,3 @@
-npx typeorm migration:run
+web:npx typeorm migration:run
 
 web: npm run start:prod
