@@ -18,6 +18,9 @@ import { CoursesModule } from './courses/courses.module';
       entities: [__dirname + '/**/*.entity.js'],
       autoLoadEntities: false,
       synchronize: false,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
   ],
 
