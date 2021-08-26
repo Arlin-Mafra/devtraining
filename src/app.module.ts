@@ -1,26 +1,16 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoursesModule } from './courses/courses.module';
+import { DatabaseConfig } from './config/database.config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     CoursesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.HOST_NAME,
-      port: 5432,
-      username: process.env.USERNAME,
-      password: process.env.PASSWORD_DB,
-      database: process.env.DATABASE,
-      entities: [__dirname + '/**/*.entity.js'],
-      autoLoadEntities: false,
-      synchronize: false,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    }),
+    TypeOrmModule.forRoot(DatabaseConfig),
   ],
 
   controllers: [AppController],
