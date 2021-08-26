@@ -9,12 +9,11 @@ import { CoursesModule } from './courses/courses.module';
     CoursesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'ec2-18-211-41-246.compute-1.amazonaws.com',
+      host: process.env.HOST_NAME,
       port: 5432,
-      username: 'duvpnydfbvjxzo',
-      password:
-        'e019a2807402c8afe4fe45a6e54235251b8f2b8e9f80004d2c5f6ce97be7a992',
-      database: 'dc7lo71n0utaav',
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD_DB,
+      database: process.env.DATABASE,
       entities: [__dirname + '/**/*.entity.js'],
       autoLoadEntities: false,
       synchronize: false,
